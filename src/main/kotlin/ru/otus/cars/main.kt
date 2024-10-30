@@ -91,3 +91,164 @@ fun repairEngine(car: VazPlatform) {
         is VazEngine.SAMARA_2108 -> println("Угол зажигания у двигателя объемом ${car.engine.volume} куб.см у машины $car")
     }
 }
+
+interface Tank {
+    fun fill(fuel: Int)
+    fun getLevel(): Int
+}
+
+interface TankMouth {
+    fun fillTank(tank: Tank, fuel: Int)
+}
+
+class GasTankMouth : TankMouth {
+    override fun fillTank(tank: Tank, fuel: Int) {
+        println("Заправка газом")
+        tank.fill(fuel)
+    }
+}
+
+class PetrolTankMouth : TankMouth {
+    override fun fillTank(tank: Tank, fuel: Int) {
+        println("Заправка бензином")
+        tank.fill(fuel)
+    }
+}
+
+
+class RegularTank(var capacity: Int = 100) : Tank {
+    private var level = 0
+
+    override fun fill(fuel: Int) {
+        val availableSpace = capacity - level
+        val actualFill = minOf(fuel, availableSpace)
+        level += actualFill
+    }
+
+    override fun getLevel(): Int = level
+
+}
+
+class ExplodingTank() : Tank {
+    private var level = 0
+
+    override fun fill(fuel: Int) {
+        throw Exception("Взрыв бака!")
+    }
+
+    override fun getLevel(): Int = level
+}
+
+
+class CarSeven : CarOutput {
+    private val tank = RegularTank()
+    private val tankMouth = GasTankMouth()
+
+
+    fun refuel(fuel: Int) {
+        tankMouth.fillTank(tank, fuel)
+    }
+
+    override fun getFuelLevel(): Int = tank.getLevel()
+
+
+    override fun printStatus() {
+        println("Семерка: Уровень топлива: ${getFuelLevel()}")
+    }
+
+    override fun toString(): String {
+        return "Семерка: Уровень топлива: ${getFuelLevel()}"
+    }
+    override fun getCurrentSpeed(): String {
+        return "Семерка: Скорость: ${getCurrentSpeed()}"
+    }
+}
+
+class CarEight : CarOutput {
+    private val tank = RegularTank()
+    private val tankMouth = PetrolTankMouth()
+
+    fun refuel(fuel: Int) {
+        tankMouth.fillTank(tank, fuel)
+    }
+
+    override fun getFuelLevel(): Int = tank.getLevel()
+
+    override fun printStatus() {
+        println("Восьмерка: Уровень топлива: ${getFuelLevel()}")
+    }
+
+    override fun toString(): String {
+        return "Восьмерка: Уровень топлива: ${getFuelLevel()}"
+    }
+    override fun getCurrentSpeed(): String {
+        return "Восьмерка: Скорость: ${getCurrentSpeed()}"
+    }
+
+
+    class TAZ : CarOutput {
+        private val tank = ExplodingTank()
+        private val tankMouth = PetrolTankMouth()
+
+
+        fun refuel(fuel: Int) {
+            try {
+                tankMouth.fillTank(tank, fuel)
+            } catch (e: Exception) {
+                println("ТАЗ: ${e.message}")
+            }
+        }
+
+        override fun getFuelLevel(): Int = tank.getLevel()
+
+
+        override fun printStatus() {
+            println("TAZ: Уровень топлива: ${getFuelLevel()}")
+        }
+
+        override fun toString(): String {
+            return "TAZ: Уровень топлива: ${getFuelLevel()}"
+        }
+        override fun getCurrentSpeed(): String {
+            return "TAZ: Скорость: ${getCurrentSpeed()}"
+        }
+    }
+
+
+
+    fun refuelCar(car: CarOutput, fuel: Int) {
+        try {
+            if(car is CarSeven) {
+                car.refuel(fuel)
+            } else if(car is CarEight){
+                car.refuel(fuel)
+            } else if(car is TAZ){
+                car.refuel(fuel)
+            } else {
+                println("Неизвестный тип машины")
+            }
+
+
+        } catch (e: Exception) {
+            println("Ошибка заправки: ${e.message}")
+        }
+    }
+
+    fun refuelCars(cars: List<CarOutput>, fuel: Int) {
+        cars.forEach {
+            refuelCar(it, fuel)
+        }
+    }
+
+    fun GasStation() {
+        val cars = listOf(CarSeven(), CarEight(), TAZ())
+
+        println("Состояние баков до заправки:")
+        cars.forEach { println(it) }
+
+        refuelCars(cars, 50)
+
+        println("Состояние баков после заправки:")
+        cars.forEach { println(it) }
+    }
+}
