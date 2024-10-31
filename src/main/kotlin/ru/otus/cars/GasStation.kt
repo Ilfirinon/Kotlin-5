@@ -12,11 +12,11 @@ class GasStation {
 
 
     fun refuelAll(cars: List<Car>) {
-        cars.forEach {
-            when (it) { /* Определяем тип машины и заправляем соответствующим топливом */
-                is Vaz2107 -> refuel(it, 10, FuelType.GAS)
-                is Vaz2108 -> refuel(it, 10, FuelType.PETROL)
-                is Taz -> refuel(it, 10, FuelType.PETROL) /* Попытка заправить Taz */
+        cars.forEach { car ->
+            when (car) {  /* Используем car, а не car::class */
+                is Vaz2107 -> refuel(car, 10, FuelType.GAS)
+                is Vaz2108 -> refuel(car, 10, FuelType.PETROL)
+                is Taz -> refuel(car, 10, FuelType.PETROL)
                 else -> println("Неизвестный тип машины")
             }
         }

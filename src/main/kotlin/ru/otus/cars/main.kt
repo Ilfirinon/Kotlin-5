@@ -101,4 +101,40 @@ fun getFuel() {
     println("Бензобаки:")
     println("2107: ${vaz1.carOutput.getFuelV()}")
     println("2108: ${vaz2.carOutput.getFuelV()}")
+    /* Создаем коллекцию и выводим информацию о топливе до и после заправки */
+    val cars = listOf(vaz1, vaz2, Taz)
+
+    println("Бензобаки до заправки:")
+    cars.forEach {
+        try {
+            println("${it::class.simpleName}: ${it.carOutput.getFuelV()}")
+        } catch (e: NotImplementedError) {
+            println("${it::class.simpleName}: Ошибка заправки")
+        }
+    }
+
+    val gasStation = GasStation()
+    /*  фильтруем список, чтобы заправлять только те машины, у которых есть carOutput */
+    val refuelableCars = cars.filter {
+        try {
+            it.carOutput.getFuelV()
+            true /* Если getFuelV() не выбросил исключение, то машина заправляемая */
+        } catch (e: NotImplementedError) {
+            false /* Если выбросил исключение, то не заправляемая */
+        }
+    }
+    gasStation.refuelAll(refuelableCars)
+
+    println("Бензобаки после заправки:")
+    cars.forEach {
+        try {
+            println("${it::class.simpleName}: ${it.carOutput.getFuelV()}")
+        } catch (e: NotImplementedError) {
+            println("${it::class.simpleName}: Уровень топлива недоступен: Машина взорвалась!")
+        }
+    }
 }
+
+
+
+
