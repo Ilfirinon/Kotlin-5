@@ -17,7 +17,7 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
                 else -> VazEngine.SAMARA_2108(1500)
             }
         }
-
+        override fun installFuelSystem(auto: Auto, tank: Tank, tankMouth: TankMouth) {}
         override fun build(plates: Car.Plates): Vaz2108 = Vaz2108("Красный").apply {
             this.engine = getRandomEngine()
             this.plates = plates
@@ -75,6 +75,10 @@ class Vaz2108 private constructor(color: String) : VazPlatform(color) {
      * Имеет доступ к внутренним данным ЭТОГО ВАЗ-2108!
      */
     inner class VazOutput : CarOutput {
+        override fun showCurrentFuelLevel(): Int {
+            return 0
+        }
+        override fun showMessage(message: String) {}
         override fun getCurrentSpeed(): Int {
             return this@Vaz2108.currentSpeed
         }
