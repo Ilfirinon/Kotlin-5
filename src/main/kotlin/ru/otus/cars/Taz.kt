@@ -36,4 +36,13 @@ object Taz: Car {
     override fun wheelToLeft(degrees: Int) {
         throw NotImplementedError("Руля нет")
     }
+    /* Создаем для Таза взрывающийся бак */
+    private val tank = object : Tank {
+        override val mouth: TankMouth = TankMouth.PetrolMouth.create(this)
+        override fun FuelLevel(): Int = 0
+        /* Взрывается при заправке */
+        override fun FillFuel(liters: Int) {
+            throw IllegalStateException("Взрыв бака!")
+        }
+    }
 }
