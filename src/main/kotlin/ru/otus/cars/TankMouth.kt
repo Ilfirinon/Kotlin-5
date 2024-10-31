@@ -51,10 +51,9 @@ sealed class TankMouth {
                     return GasMouth().apply { this.tank = tank }
                 }
             }
-
+        }
             fun fuelGas(liters: Int) {
                 putFuel(liters)
             }
         }
     }
-}

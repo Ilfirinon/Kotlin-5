@@ -45,4 +45,12 @@ object Taz: Car {
             throw IllegalStateException("Взрыв бака!")
         }
     }
+    /* Переопределяем функцию refuel */
+    override fun refuel(liters: Int, fuelType: FuelType) {
+        try {
+            tank.FillFuel(liters) // Вызовет взрыв
+        } catch (e: IllegalStateException) {
+            println("Ошибка заправки Taz: ${e.message}")
+        }
+    }
 }

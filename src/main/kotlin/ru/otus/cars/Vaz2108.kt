@@ -84,4 +84,17 @@ class Vaz2108 private constructor(color: String, private val tank: Tank) : VazPl
             return this@Vaz2108.currentSpeed
         }
     }
+    /* Переопределяем функцию refuel */
+    override fun refuel(liters: Int, fuelType: FuelType) {
+        when (val mouth = tank.mouth) {
+            is TankMouth.PetrolMouth -> {
+                if (fuelType == FuelType.PETROL) {
+                    mouth.fuelPetrol(liters)
+                } else {
+                    println("Неверный тип топлива для ВАЗ 2108")
+                }
+            }
+            else -> println("Неизвестный тип горловины")
+        }
+    }
 }
