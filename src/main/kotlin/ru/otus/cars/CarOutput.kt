@@ -8,6 +8,6 @@ interface CarOutput {
      * Скажи текущую скорость
      */
     fun getCurrentSpeed(): Int
-    fun showCurrentFuelLevel(): Int
-    fun showMessage(message: String)
+    /* Добавляем функцию вывода уровня топлива для пользователя */
+    fun getFuelV(): Int
 }

@@ -44,7 +44,7 @@ sealed class TankMouth {
             putFuel(liters)
         }
 
-        /* По анналогии создаем для газа */
+        /* По аналогии создаем для газа */
         class GasMouth private constructor() : TankMouth() {
             companion object : Builder {
                 override fun create(tank: Tank): TankMouth {
