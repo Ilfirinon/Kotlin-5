@@ -65,7 +65,7 @@ class Vaz2108 private constructor(color: String, private val tank: Tank) : VazPl
 
     // Выводим состояние машины
     override fun toString(): String {
-        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed)"
+        return "Vaz2108(plates=$plates, wheelAngle=$wheelAngle, currentSpeed=$currentSpeed), fuel=${tank.FuelLevel()})" /* Добавляем вывод топлива */
     }
 
     /**
